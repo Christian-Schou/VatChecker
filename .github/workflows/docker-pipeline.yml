@@ -35,7 +35,7 @@ jobs:
     - name: Build and push multi-arch Docker images
       uses: docker/build-push-action@v6
       with:
-        platforms: linux/amd64,linux/arm64,linux/arm/v7,windows/amd64
+        platforms: linux/amd64,linux/arm64,linux/arm/v7
         push: true
         tags: chrschou/vies-vat-checker:${{ env.VERSION_TAG }},chrschou/vies-vat-checker:latest
 
