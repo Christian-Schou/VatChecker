@@ -366,3 +366,6 @@ FodyWeavers.xsd
 ./.idea
 .idea
 .idea/
+
+# MAC OS
+.DS_Store

@@ -1,0 +1,100 @@
+{
+  "x-generator": "NSwag v14.0.3.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))",
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Vat Checker API",
+    "description": "A VAT API to validate European VAT numbers with a simple request from any of your services.",
+    "version": "1.0.0.0"
+  },
+  "paths": {
+    "/api/Vies": {
+      "post": {
+        "tags": [
+          "Vies"
+        ],
+        "operationId": "ValidateVatNumberAsync",
+        "requestBody": {
+          "x-name": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidateVatNumberCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ViesValidationResultDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ViesValidationResultDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "isValid": {
+            "type": "boolean"
+          },
+          "requestDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "company": {
+            "type": "string",
+            "nullable": true
+          },
+          "address": {
+            "type": "string",
+            "nullable": true
+          },
+          "requestIdentifier": {
+            "type": "string",
+            "nullable": true
+          },
+          "vatNumber": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "ValidateVatNumberCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "country": {
+            "type": "string"
+          },
+          "vatNumberToValidate": {
+            "type": "string"
+          },
+          "requestingValidatorCountry": {
+            "type": "string",
+            "nullable": true
+          },
+          "requestingValidatorVatNumber": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      }
+    }
+  }
+}
