@@ -35,7 +35,7 @@ jobs:
         context: VatChecker/
         platforms: linux/${{ matrix.architecture }}
         push: true
-        tags: ${{ secrets.DOCKER_USERNAME }}/vies-vat-checker:${{ env.VERSION_TAG }},chrschou/vies-vat-checker:latest
+        tags: ${{ secrets.DOCKER_USERNAME }}/vies-vat-checker:${{ env.VERSION_TAG }},${{ secrets.DOCKER_USERNAME }}/vies-vat-checker:latest
 
     - name: Update Docker Hub README
       env:
