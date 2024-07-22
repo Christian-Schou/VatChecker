@@ -39,7 +39,7 @@ namespace VatChecker.Controllers
         )]
         [SwaggerResponse(200, "The VIES Result", typeof(ViesVatResult))]
         public  ActionResult<ViesVatResult> CheckVatNo( [FromQuery, SwaggerParameter("Country Code (2-digit. DK/FR/BG)", Required = true)]string countryCode = "dk", 
-                                                        [FromQuery, SwaggerParameter("Company Vat No. i.e. 21370738)", Required = true)] string vatNo = "21370738")
+                                                        [FromQuery, SwaggerParameter("Company Vat No. i.e. 13612870)", Required = true)] string vatNo = "13612870")
         {
             // Try / Catch
             try
