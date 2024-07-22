@@ -9,21 +9,25 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseSerilog((ctx, lc) => lc
     .WriteTo.Console());
 
+Log.Information("Registering all required services for running the API...");
+
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+Log.Information("Controllers and endpoint exploration has been added...");
+
 builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1",
         new OpenApiInfo
         {
-            Title = "EU Vat Checker",
+            Title = "API VAT Checker",
             Version = "v1",
-            Description = "This API is a microservice to validate VAT/TAX Numbers using VIES. Complete docs can be found at '/api-docs'.",
+            Description = "This API can be used to validate VAT/TAX Numbers using the VIES database. Complete docs can be found at '/api-docs'.",
             Contact = new OpenApiContact
             {
                 Name = "Christian Schou",
-                Email = "someemail@somedomain.com"
+                Email = "chsc@christian-schou.com"
             }
         });
 
@@ -32,32 +36,33 @@ builder.Services.AddSwaggerGen(options =>
     options.IncludeXmlComments(xmlPath);
     options.EnableAnnotations();
 });
+Log.Information("Swagger API Documentation was added...");
 
 // Register EU Vat Checker Service
 builder.Services.AddTransient<IEUVatChecker, EUVatChecker>();
+Log.Information("EU Vat Services has been registered in API...");
 
 var app = builder.Build();
-Log.Information("Vat No Validation Server is booting up...");
+Log.Information("API is booting up, please wait...");
 // Configure the HTTP request pipeline.
 
-Log.Information("Adding Swagger OpenAPI");
+Log.Information("Using the registered services for the API...");
+Log.Information("Using Swagger API Documentation...");
 app.UseSwagger();
 app.UseSwaggerUI(options =>
     options.SwaggerEndpoint("/swagger/v1/swagger.json",
-    "EU Vat Checker v1"));
+    "API VAT Checker v1"));
 
-Log.Information("Adding ReDoc API Documentation");
+Log.Information("Using ReDoc API Documentation...");
 app.UseReDoc(options =>
 {
-    options.DocumentTitle = "EU Vat Checker";
+    options.DocumentTitle = "API VAT Checker";
     options.SpecUrl = "/swagger/v1/swagger.json";
 });
-
-app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
 app.MapControllers();
-Log.Information("EU Vat Services has been registered");
-Log.Information("EU Vat Server is READY");
+Log.Information("VAT API is is READY!");
+
 app.Run();
