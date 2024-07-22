@@ -15,10 +15,10 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v2
+      uses: docker/setup-buildx-action@v3
 
     - name: Log in to Docker Hub
-      uses: docker/login-action@v2
+      uses: docker/login-action@v3
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
@@ -28,24 +28,16 @@ jobs:
       run: echo "VERSION_TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
 
     - name: Set up QEMU
-      uses: docker/setup-qemu-action@v2
+      uses: docker/setup-qemu-action@v3
       with:
         platforms: all
-
-    - name: Create and configure Docker Buildx builder
-      run: |
-        docker buildx create --name mybuilder --use
-        docker buildx inspect --bootstrap
-        docker buildx ls
-
+        
     - name: Build and push multi-arch Docker images
-      run: |
-        docker buildx build . \
-          --platform linux/amd64,linux/arm64,linux/arm/v7,windows/amd64 \
-          --file Dockerfile \
-          --tag chrschou/vies-vat-checker:${{ env.VERSION_TAG }} \
-          --tag chrschou/vies-vat-checker:latest \
-          --push
+      uses: docker/build-push-action@v6
+      with:
+        platforms: linux/amd64,linux/arm64,linux/arm/v7,windows/amd64
+        push: true
+        tags: chrschou/vies-vat-checker:${{ env.VERSION_TAG }},chrschou/vies-vat-checker:latest
 
     - name: Update Docker Hub README
       env:
