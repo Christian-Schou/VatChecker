@@ -6,9 +6,11 @@ on:
       - 'v*'
 
 jobs:
-  build:
-
+  docker:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        architecture: [ amd64, arm64, arm/v7 ]
 
     steps:
     - name: Check out the repository
@@ -26,18 +28,14 @@ jobs:
     - name: Extract version tag
       id: vars
       run: echo "VERSION_TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
-
-    - name: Set up QEMU
-      uses: docker/setup-qemu-action@v3
-      with:
-        platforms: all
         
     - name: Build and push multi-arch Docker images
       uses: docker/build-push-action@v6
       with:
-        platforms: linux/amd64,linux/arm64,linux/arm/v7
+        context: ./VatChecker/Dockerfile
+        platforms: linux/${{ matrix.architecture }}
         push: true
-        tags: chrschou/vies-vat-checker:${{ env.VERSION_TAG }},chrschou/vies-vat-checker:latest
+        tags: ${{ secrets.DOCKER_USERNAME }}/vies-vat-checker:${{ env.VERSION_TAG }},chrschou/vies-vat-checker:latest
 
     - name: Update Docker Hub README
       env:
