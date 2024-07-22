@@ -40,7 +40,7 @@ jobs:
 
     - name: Build and push multi-arch Docker images
       run: |
-        docker buildx build ./VatChecker/. \
+        docker buildx build . \
           --platform linux/amd64,linux/arm64,linux/arm/v7,windows/amd64 \
           --file Dockerfile \
           --tag chrschou/vies-vat-checker:${{ env.VERSION_TAG }} \
