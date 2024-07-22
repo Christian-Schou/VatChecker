@@ -7,22 +7,31 @@
     "version": "1.0.0.0"
   },
   "paths": {
-    "/api/WeatherForecasts": {
-      "get": {
+    "/api/Vies": {
+      "post": {
         "tags": [
-          "WeatherForecasts"
+          "Vies"
         ],
-        "operationId": "GetWeatherForecasts",
+        "operationId": "ValidateVatNumberAsync",
+        "requestBody": {
+          "x-name": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidateVatNumberCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
         "responses": {
           "200": {
             "description": "",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/WeatherForecast"
-                  }
+                  "$ref": "#/components/schemas/ViesValidationResultDto"
                 }
               }
             }
@@ -33,23 +42,54 @@
   },
   "components": {
     "schemas": {
-      "WeatherForecast": {
+      "ViesValidationResultDto": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "date": {
+          "isValid": {
+            "type": "boolean"
+          },
+          "requestDate": {
             "type": "string",
             "format": "date-time"
           },
-          "temperatureC": {
-            "type": "integer",
-            "format": "int32"
+          "message": {
+            "type": "string",
+            "nullable": true
           },
-          "temperatureF": {
-            "type": "integer",
-            "format": "int32"
+          "company": {
+            "type": "string",
+            "nullable": true
           },
-          "summary": {
+          "address": {
+            "type": "string",
+            "nullable": true
+          },
+          "requestIdentifier": {
+            "type": "string",
+            "nullable": true
+          },
+          "vatNumber": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "ValidateVatNumberCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "country": {
+            "type": "string"
+          },
+          "vatNumberToValidate": {
+            "type": "string"
+          },
+          "requestingValidatorCountry": {
+            "type": "string",
+            "nullable": true
+          },
+          "requestingValidatorVatNumber": {
             "type": "string",
             "nullable": true
           }
