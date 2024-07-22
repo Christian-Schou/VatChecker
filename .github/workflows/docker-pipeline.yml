@@ -32,7 +32,7 @@ jobs:
     - name: Build and push multi-arch Docker images
       uses: docker/build-push-action@v6
       with:
-        context: VatChecker/
+        context: .
         platforms: linux/${{ matrix.architecture }}
         push: true
         tags: ${{ secrets.DOCKER_USERNAME }}/vies-vat-checker:${{ env.VERSION_TAG }},${{ secrets.DOCKER_USERNAME }}/vies-vat-checker:latest
